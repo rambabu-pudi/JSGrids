@@ -1,0 +1,39 @@
+<html>
+
+<link rel="stylesheet" type="text/css" media="screen" href="css/handsontable.full.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="css/handsontable-support.css" />
+
+<script src="js/handsontable.full.js"></script>
+<a onclick="javascript:loadData();">Load Data</a><br>
+<a onclick="javascript:clearData();">Clear Data</a>
+<div id="example"></div>
+<script>
+var data = function () {
+  return Handsontable.helper.createSpreadsheetData(20, 300);
+};
+
+var container = document.getElementById('example');
+
+var hot = new Handsontable(container, {
+  colHeaders: ['H1','H2'],
+  data:data(),
+  rowHeaders: false,
+  // performance tip: set constant size
+  colWidths: 80,
+  rowHeights: 23,
+  // performance tip: turn off calculations
+  autoRowSize: true,
+  autoColSize: false,
+});
+
+var loadData = function(){
+		hot.loadData(data());	
+};
+
+var clearData = function(){
+	hot.clear();
+	hot.render()
+};
+</script>
+
+</html>

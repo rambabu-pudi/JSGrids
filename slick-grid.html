@@ -1,0 +1,154 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
+  <title>SlickGrid example 3: Editing</title>
+  <link rel="stylesheet" href="css/slick.grid.css" type="text/css"/>
+  <link rel="stylesheet" href="css/jquery-ui-1.11.3.custom.css" type="text/css"/>
+   <link rel="stylesheet" href="css/jquery-ui-1.8.24.custom.css" type="text/css"/>
+  <link rel="stylesheet" href="css/slick-examples.css" type="text/css"/>
+  <link rel="stylesheet" href="css/slick.columnpicker.css" type="text/css"/>
+  
+  
+  <style>
+    .cell-title {
+      font-weight: bold;
+    }
+    .cell-effort-driven {
+      text-align: center;
+    }
+    .slick-row.odd {
+  background: #fafafa;
+  border-bottom-style: solid;
+  border-bottom-width: 6px;
+}
+
+.highlight{ background-color:  yellow !important;} 
+.highlight2{ background-color : red !important;} 
+
+.colcolor{
+background-color: #ffedd8;
+}
+
+.leftborder{
+border-left: 3px solid black;
+}
+  </style>
+</head>
+<body>
+<div style="position:relative">
+  <div style="width:100%;">
+    <div id="myGrid" style="width:100%;height:500px;"></div>
+  </div>
+<input type="button" onclick="javascript:loadData();" value="Load Data"></input>
+<input type="button" onclick="javascript:scrollToPosition();" value="Scroll To"></input>
+
+</div>
+
+
+
+<script src="js/jquery-1.11.2.min.js"></script>
+<script src="js/jquery-ui-1.11.3.min.js"></script>
+<script src="js/jquery.event.drag-2.3.0.js"></script>
+
+<script src="js/slick.core.js"></script>
+<script src="js/slick.cellrangedecorator.js"></script>
+<script src="js/slick.cellrangeselector.js"></script>
+<script src="js/slick.cellselectionmodel.js"></script>
+<script src="js/slick.formatters.js"></script>
+<script src="js/slick.editors.js"></script>
+<script src="js/slick.grid.js"></script>
+<script src="js/jquery.mousewheel.js"></script>
+<script src="js/slick.dataview.js"></script>
+<script src="js/slick.columnpicker.js"></script>
+
+<script>
+
+
+
+  function requiredFieldValidator(value) {
+    if (value == null || value == undefined || !value.length) {
+      return {valid: false, msg: "This is a required field"};
+    } else {
+      return {valid: true, msg: null};
+    }
+  }
+  var grid;
+  var columns = [];
+  for(var col =0; col<315; col++){
+	  var cssClass = "cell-title colcolor";
+	  if(col == 5){
+		  cssClass =  cssClass + ' leftborder';
+	  }
+	  columns[col] =   {id: "Column-"+col, name: "Column-"+col, field: "Column-"+col, cssClass: cssClass, editor: Slick.Editors.Text, validator: requiredFieldValidator};
+  }
+  var counter = 1;
+ var getData =  function (){
+  var data = [];
+	  for (var i = 0; i < 20; i++) {
+	      var d = (data[i] = {});
+	      for(var col =0; col<315; col++){
+	      d["Column-"+col] = counter+"000000"+col;
+	      }
+	    }
+	  counter++;
+	  return data;
+  };
+  
+  
+  var options = {
+    editable: true,
+    enableAddRow: true,
+    enableCellNavigation: true,
+    asyncEditorLoading: false,
+    autoEdit: false,
+    frozenColumn : 2,
+	frozenBottom: true
+  };
+  $(function () {
+	  var sTime = new Date().getTime();
+	  
+    grid = new Slick.Grid("#myGrid", getData(), columns, options);
+   // grid.setSelectionModel(new Slick.CellSelectionModel());
+   grid.setCellCssStyles("highlight", {
+		  1: {
+		  	 "Column-1": "highlight",
+		  	 "Column-5": "highlight" ,
+		  	 "Column-4": "highlight2",
+		  	 "Column-8": "highlight",
+		  	 "Column-11": "highlight2" ,
+		  	 "Column-20": "highlight",
+		  	 "Column-18": "highlight",
+		  	 "Column-14": "highlight", 
+		  	 "Column-40": "highlight"
+		     },
+
+		    9: {
+		  	"Column-5": "highlight",
+		  	"Column-22": "highlight2",
+		  	"Column-9": "highlight",
+		  	"Column-14": "highlight2", 
+		  	"Column-30": "highlight"
+		     }
+		     })
+    console.log("Total Time taken for inital load in ms="+ ((new Date().getTime()) - sTime));
+  })
+  $(function() {
+			$( '#frozenRow' ).val(2 );
+		});
+  
+  function scrollToPosition(){
+  	grid.scrollCellIntoView(7, 60)
+  }
+  
+  function loadData(){
+	 
+	  var sTime = new Date().getTime();
+	  grid.setData(getData());
+	  grid.render();
+	  console.log("Total Time taken for reload in ms="+ ((new Date().getTime()) - sTime));
+  }
+</script>
+</body>
+</html>

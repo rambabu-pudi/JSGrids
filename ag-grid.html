@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="js/ag-grid-enterprise.js"></script>
+  <script src="js/JSONDATA.js"></script>
+  <link rel="stylesheet" href="css/ag-grid.css">
+  <link rel="stylesheet" href="css/ag-theme-balham.css">
+</head>
+<body>
+  <h1>Hello from ag-grid!</h1>
+<div id="myGrid" style="height: 600px;width:100%;" class="ag-theme-balham"></div>
+<input type="button" onclick="javascript:loadData();" value="Load Data"></input>
+  <script type="text/javascript" charset="utf-8">
+    // specify the columns
+    var columnDefs = [
+      {headerName: "Make", field: "make"},
+      {headerName: "Model", field: "model"},
+      {headerName: "Price", field: "price"}
+    ];
+    var grid;
+    var columnDefs = [];
+    for(var col =0; col<50; col++){
+    var colFrg = [
+      { headerName: "Title-"+col, field: "title-"+col, width: 120},
+      { headerName: "Description-"+col, field: "description-"+col, width: 100},
+      { headerName: "Duration-"+col, field: "duration-"+col},
+      { headerName: "% Complete-"+col, field: "percentComplete-"+col, width: 80},
+      { headerName: "Start-"+col, field: "start-"+col, minWidth: 60},
+      { headerName: "Finish-"+col, field: "finish-"+col, minWidth: 60},
+      {headerName: "Effort Driven-"+col, width: 80, minWidth: 20, maxWidth: 80}
+    ];
+    columnDefs = columnDefs.concat(colFrg);  
+    }
+    
+    function getData(){
+    var data = [];
+  	  for (var i = 0; i < 20; i++) {
+  	      var d = (data[i] = {});
+  	      for(var col =0; col<50; col++){
+  	      d["title-"+col] = "Task " + i;
+  	      d["description-"+col] = "This is a sample task description.\n  It can be multiline";
+  	      d["duration-"+col] = Math.round(Math.random() * 100)%10+" days";
+  	      d["percentComplete-"+col] = Math.round(Math.random() * 100);
+  	      d["start-"+col] = "01/01/20"+Math.round(Math.random() * 100)%100;
+  	      d["finish-"+col] = "01/05/20"+Math.round(Math.random() * 100)%100;
+  	    	  
+  	      }
+  	    }
+  	  return data;
+    }
+    // specify the data
+    var rowData = [
+      {make: "Toyota", model: "Celica", price: 35000},
+      {make: "Ford", model: "Mondeo", price: 32000},
+      {make: "Porsche", model: "Boxter", price: 72000}
+    ];
+    
+    // let the grid know which columns and what data to use
+    var gridOptions = {
+      columnDefs: columnDefs,
+      rowData: getData()
+    };
+
+  // lookup the container we want the Grid to use
+  var eGridDiv = document.querySelector('#myGrid');
+
+  // create the grid passing in the div to use together with the columns & data we want to use
+  new agGrid.Grid(eGridDiv, gridOptions);
+  
+  function loadData(){
+	  gridOptions.api.setRowData(getData());  
+  }
+
+  </script>
+</body>
+</html>
